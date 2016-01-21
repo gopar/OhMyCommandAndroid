@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Oh My Command!</string>
+
+    <!-- Login Activity -->
+    <string name="login_btn">Log In</string>
+    <string name="signup_btn">Sign Up</string>
+    <string name="signup_text">No account yet? Create one</string>
+    <string name="error_login">Login Failed. Try Again.</string>
+
+    <!-- Generic Strings -->
+    <string name="cannot_be_empty">Cannot be empty</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="are_you_connected">Are you connected to internet?</string>
+    <string name="something_wrong">Something went wrong</string>
 </resources>
