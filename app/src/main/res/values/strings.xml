@@ -7,11 +7,19 @@
     <string name="signup_text">No account yet? Create one</string>
     <string name="error_login">Login Failed. Try Again.</string>
 
+    <!-- Singup Activity -->
+    <string name="signup_second_password_hint">Password (Again)</string>
+    <string name="signup_register_btn">Create Account</string>
+    <string name="signin_text">Already a member? Login</string>
+    <string name="password_min">Password Minimum is 7 characters</string>
+    <string name="passwords_must_match">Passwords much match</string>
+
     <!-- Generic Strings -->
     <string name="cannot_be_empty">Cannot be empty</string>
     <string name="invalid_email">Invalid email</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
     <string name="are_you_connected">Are you connected to internet?</string>
     <string name="something_wrong">Something went wrong</string>
 </resources>

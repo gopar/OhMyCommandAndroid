@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollview_login"
+<ScrollView
+    android:id="@+id/scrollview_signup"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
@@ -17,11 +18,11 @@
         android:focusableInTouchMode="true">
 
         <ImageView
+            android:src="@drawable/omc_logo"
             android:layout_width="wrap_content"
             android:layout_height="125dp"
             android:layout_marginBottom="0dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/omc_logo"/>
+            android:layout_gravity="center_horizontal" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,18 +33,36 @@
             android:layout_marginBottom="24dp"
             />
 
-        <!-- Username Label -->
+        <!-- Email Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText
-                android:id="@+id/login_input_email"
+            <AutoCompleteTextView
+                android:id="@+id/register_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="@string/username_hint" />
+                android:hint="@string/username_hint"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Email Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <AutoCompleteTextView
+                android:id="@+id/register_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="@string/email_hint"
+                android:maxLines="1"
+                android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
@@ -53,29 +72,44 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
             <EditText
-                android:id="@+id/login_input_password"
+                android:id="@+id/register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="@string/password_hint"/>
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText
+                android:id="@+id/register_second_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/signup_second_password_hint"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Signup Button -->
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_register"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="@string/login_btn"/>
+            android:text="@string/signup_register_btn"/>
 
         <TextView
-            android:id="@+id/link_signup"
+            android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="@string/signup_text"
+            android:text="@string/signin_text"
             android:gravity="center"
-            android:textSize="16sp"/>
+            android:textSize="16dip"/>
+
     </LinearLayout>
 </ScrollView>
