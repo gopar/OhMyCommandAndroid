@@ -22,4 +22,8 @@
     <string name="username_hint">Username</string>
     <string name="are_you_connected">Are you connected to internet?</string>
     <string name="something_wrong">Something went wrong</string>
+
+
+    <!-- Preferences -->
+    <string name="pref_user_auth_token">token</string>
 </resources>
