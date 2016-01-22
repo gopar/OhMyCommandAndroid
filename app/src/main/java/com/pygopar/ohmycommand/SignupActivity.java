@@ -1,13 +1,30 @@
 package com.pygopar.ohmycommand;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+
+import com.pygopar.api.OMCAPI;
+import com.pygopar.constants.OMCConst;
+import com.pygopar.helpers.Token;
+import com.pygopar.helpers.User;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class SignupActivity extends BaseActivity {
     private static final String TAG = SignupActivity.class.toString();
@@ -20,6 +37,8 @@ public class SignupActivity extends BaseActivity {
     EditText firstPassET;
     @Bind(R.id.register_second_password)
     EditText secondPassET;
+    @Bind(R.id.btn_register)
+    Button registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +56,62 @@ public class SignupActivity extends BaseActivity {
     public void onClickbtnRegister() {
         if (!validate())
             return;
-        Log.e(TAG, "SUP");
+
+        // Disable btn
+        registerBtn.setEnabled(false);
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating Account...");
+        progressDialog.show();
+
+        final String email = emailET.getText().toString();
+        final String username = usernameET.getText().toString();
+        final String password = firstPassET.getText().toString();
+
+        // Start api call
+        Retrofit apiCall = new Retrofit.Builder()
+                .baseUrl(OMCConst.API_URL_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        OMCAPI omcAPI = apiCall.create(OMCAPI.class);
+        Call<Token> postNewUser = omcAPI.postNewUser(username, email, password);
+
+        postNewUser.enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Response<Token> response, Retrofit retrofit) {
+                Token token = response.body();
+                progressDialog.dismiss();
+
+                if (response.isSuccess() && token != null) {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    prefs.edit().putString(getResources().getString(R.string.pref_user_auth_token),
+                            token.getToken()).apply();
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+                } else {
+                    onFailure(new Exception());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                final Snackbar snackbar = Snackbar.make(findViewById(R.id.scrollview_signup),
+                        getResources().getString(isNetworkAvailable()? R.string.something_wrong: R.string.are_you_connected),
+                        Snackbar.LENGTH_LONG);
+                snackbar.setAction("OKAY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+
+                progressDialog.dismiss();
+                registerBtn.setEnabled(true);
+                snackbar.show();
+            }
+        });
     }
 
     private boolean validate() {

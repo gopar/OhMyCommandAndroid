@@ -33,5 +33,5 @@ public interface OMCAPI {
 
     @FormUrlEncoded
     @POST(OMCConst.API_POST_NEW_USER)
-    Call<User> postNewUser(@Field("username") String username, @Field("password") String password);
+    Call<Token> postNewUser(@Field("username") String username, @Field("email") String email, @Field("password") String password);
 }
