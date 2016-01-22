@@ -23,6 +23,7 @@
     <string name="are_you_connected">Are you connected to internet?</string>
     <string name="something_wrong">Something went wrong</string>
     <string name="only_letters_and_numbers">Can only contain letters and numbers</string>
+    <string name="commands">Commands</string>
 
 
     <!-- Preferences -->

@@ -27,8 +27,6 @@ import retrofit.Retrofit;
 
 public class LoginActivity extends BaseActivity {
     private static final String TAG = LoginActivity.class.toString();
-    public static final String EXTRA_USERNAME = "username";
-    public static final String EXTRA_PASSWORD = "password";
 
     @Bind(R.id.login_input_username)
     EditText usernameET;
@@ -51,15 +49,6 @@ public class LoginActivity extends BaseActivity {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
             return;
-        }
-
-        Intent intent = getIntent();
-
-        if (intent != null) {
-            final String username = intent.getStringExtra(EXTRA_USERNAME);
-            final String password = intent.getStringExtra(EXTRA_PASSWORD);
-            usernameET.setText(username);
-            passwordET.setText(password);
         }
     }
 
