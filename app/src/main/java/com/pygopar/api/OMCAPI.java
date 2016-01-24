@@ -3,7 +3,6 @@ package com.pygopar.api;
 import com.pygopar.constants.OMCConst;
 import com.pygopar.helpers.Command;
 import com.pygopar.helpers.Token;
-import com.pygopar.helpers.User;
 
 import java.util.List;
 
