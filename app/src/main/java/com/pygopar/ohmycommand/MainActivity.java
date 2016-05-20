@@ -1,9 +1,11 @@
 package com.pygopar.ohmycommand;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +26,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import butterknife.OnItemLongClick;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -119,6 +122,31 @@ public class MainActivity extends BaseActivity {
     @OnItemClick(R.id.list_commands)
     public void onClickCommand(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this, commandList.get(position).command, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnItemLongClick(R.id.list_commands)
+    public boolean onLongClickCommand(AdapterView<?> adapterView, View view, int position, long id) {
+        final String command =  commandList.get(position).command;
+        DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Log.w(TAG, "Si");
+                        // TODO: 5/20/16 Add handler to delete command from server and from local DB
+                        // Then update listview accordingly
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // Do nothing.
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to delete?\n" + (command.length() > 11? command.substring(0, 10): command))
+                .setPositiveButton("Yes", dialogListener).setNegativeButton("No", dialogListener).show();
+        return true;
     }
 
     @OnClick(R.id.fab_create)
