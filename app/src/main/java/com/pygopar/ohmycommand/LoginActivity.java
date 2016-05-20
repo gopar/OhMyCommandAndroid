@@ -59,7 +59,8 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void onCLickBtnLogin () {
-        Log.e(TAG, "HELLO");
+        Log.e(TAG, "OnClickBtnLogin entry");
+        // Check fields are not empty
         if (!validate())
             return;
 
@@ -75,7 +76,7 @@ public class LoginActivity extends BaseActivity {
         final String username = usernameET.getText().toString();
         final String pass = passwordET.getText().toString();
 
-        // Start to call tu authh against server
+        // Start to call tu auth against server
         Retrofit apiCall = new Retrofit.Builder()
                 .baseUrl(OMCConst.API_URL_BASE)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -129,6 +130,10 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Checks that user input fields are non-blank, if so return true. Otherwise false.
+     * @return boolean
+     */
     private boolean validate() {
         boolean isValid = true;
 
