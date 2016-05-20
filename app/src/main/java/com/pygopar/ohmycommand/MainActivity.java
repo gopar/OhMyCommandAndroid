@@ -1,6 +1,7 @@
 package com.pygopar.ohmycommand;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemClick;
 import retrofit.Call;
 import retrofit.Callback;
@@ -117,5 +119,10 @@ public class MainActivity extends BaseActivity {
     @OnItemClick(R.id.list_commands)
     public void onClickCommand(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this, commandList.get(position).command, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.fab_create)
+    public void onFabClick() {
+        startActivity(new Intent(getApplicationContext(), CreateActivity.class));
     }
 }

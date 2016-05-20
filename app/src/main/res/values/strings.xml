@@ -14,6 +14,15 @@
     <string name="password_min">Password Minimum is 7 characters</string>
     <string name="passwords_must_match">Passwords much match</string>
 
+    <!-- Create Acitivity -->
+    <string name="create_header">Create New Command</string>
+    <string name="create_command">Command</string>
+    <string name="create_os">OS</string>
+    <string name="create_version">Version</string>
+    <string name="create_note">Note</string>
+    <string name="create_cancel">Cancel</string>
+    <string name="create_add">Create</string>
+
     <!-- Generic Strings -->
     <string name="cannot_be_empty">Cannot be empty</string>
     <string name="invalid_email">Invalid email</string>
