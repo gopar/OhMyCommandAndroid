@@ -92,10 +92,10 @@ public class CreateActivity extends BaseActivity {
             public void onResponse(Response<Command> response, Retrofit retrofit) {
                 Log.w(TAG, "OnResponse");
                 Command command = response.body();
+                Log.w(TAG, "Command id = " + command.myId);
                 progressDialog.dismiss();
 
                 if (response.isSuccess() && command != null){
-                    // TODO: 5/20/16 Save to DB and update listview
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("command", command.command);
                     returnIntent.putExtra("os", command.os);

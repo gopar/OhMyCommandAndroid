@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.pygopar.api.OMCAPI;
 import com.pygopar.constants.OMCConst;
 import com.pygopar.helpers.Command;
+import com.squareup.okhttp.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +125,6 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            // TODO: 5/21/16 Update listview (IP)
             final String command = data.getStringExtra("command");
             final String os = data.getStringExtra("os");
             final String version = data.getStringExtra("version");
@@ -153,16 +153,62 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnItemLongClick(R.id.list_commands)
-    public boolean onLongClickCommand(AdapterView<?> adapterView, View view, int position, long id) {
-        final String command =  commandList.get(position).command;
+    public boolean onLongClickCommand(AdapterView<?> adapterView, View view, final int position, long id) {
+        final Command commandObj = commandList.get(position);
+        final String command =  commandObj.command;
+        final BaseActivity activity = this;
         DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         Log.w(TAG, "Si");
-                        // TODO: 5/20/16 Add handler to delete command from server and from local DB
                         // Then update listview accordingly
+                        // Get token from prefs
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+                        String token = prefs.getString(getResources().getString(R.string.pref_user_auth_token), null);
+                        Log.w(TAG, "T " +token);
+
+                        final ProgressDialog progressDialog = new ProgressDialog(activity);
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setMessage("Fetching Commands...");
+                        progressDialog.show();
+
+                        Retrofit apiCall = new Retrofit.Builder()
+                                .baseUrl(OMCConst.API_URL_BASE)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        OMCAPI omcAPI = apiCall.create(OMCAPI.class);
+                        Call<ResponseBody> deleteCommand = omcAPI.deleteCommand(OMCConst.API_TOKEN_HEADER + token, commandObj.getId());
+
+                        deleteCommand.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                                if (response.isSuccess()) {
+                                    // Delete command from DB, update ListView
+                                    commandObj.delete();
+                                    commandList.remove(position);
+
+                                    ArrayList<String> items = new ArrayList<>();
+
+                                    for (Command c : commandList)
+                                        items.add(c.command);
+
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,
+                                            R.layout.command_textview, R.id.command_textview, items);
+                                    commandsListView.setAdapter(adapter);
+                                    progressDialog.dismiss();
+                                }
+                                else
+                                    onFailure(new Exception());
+                            }
+
+                            @Override
+                            public void onFailure(Throwable t) {
+                                Toast.makeText(activity, "Unable to delete", Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
+                            }
+                        });
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         // Do nothing.
