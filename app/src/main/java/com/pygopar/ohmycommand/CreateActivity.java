@@ -1,6 +1,7 @@
 package com.pygopar.ohmycommand;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -8,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.pygopar.api.OMCAPI;
 import com.pygopar.constants.OMCConst;
@@ -90,18 +92,28 @@ public class CreateActivity extends BaseActivity {
             public void onResponse(Response<Command> response, Retrofit retrofit) {
                 Log.w(TAG, "OnResponse");
                 Command command = response.body();
-                Log.w(TAG, "" + command);
                 progressDialog.dismiss();
 
                 if (response.isSuccess() && command != null){
                     // TODO: 5/20/16 Save to DB and update listview
-                    
-                }
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("command", command.command);
+                    returnIntent.putExtra("os", command.os);
+                    returnIntent.putExtra("version", command.version);
+                    returnIntent.putExtra("note", command.note);
+                    setResult(MainActivity.RESULT_OK, returnIntent);
+                    Toast.makeText(activity, "Command Created!", Toast.LENGTH_LONG).show();
+                    finish();
+                } else
+                    onFailure(new Exception());
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG).show();
+                Intent returnIntent = new Intent();
+                setResult(MainActivity.RESULT_CANCELED, returnIntent);
+                finish();
             }
         });
     }

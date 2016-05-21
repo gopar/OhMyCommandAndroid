@@ -36,6 +36,9 @@ public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.toString();
     private List<Command> commandList = new ArrayList<>();
 
+    public final static int RESULT_OK = 1;
+    public final static int RESULT_CANCELED = 2;
+
     @Bind(R.id.list_commands)
     ListView commandsListView;
 
@@ -87,7 +90,6 @@ public class MainActivity extends BaseActivity {
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
                             R.layout.command_textview, R.id.command_textview, commandText);
-
                     commandsListView.setAdapter(adapter);
                 } else {
                     onFailure(new Exception());
@@ -116,6 +118,33 @@ public class MainActivity extends BaseActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, R.layout.command_textview, R.id.command_textview, items);
         commandsListView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // TODO: 5/21/16 Update listview (IP)
+            final String command = data.getStringExtra("command");
+            final String os = data.getStringExtra("os");
+            final String version = data.getStringExtra("version");
+            final String note = data.getStringExtra("note");
+
+            Command commandObj = new Command(command, os , version, note);
+            commandObj.save();
+            commandList.add(commandObj);
+
+            ArrayList<String> items = new ArrayList<>();
+
+            for (Command c : commandList)
+                items.add(c.command);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, R.layout.command_textview, R.id.command_textview, items);
+
+            commandsListView.setAdapter(adapter);
+        }
+
     }
 
     @OnItemClick(R.id.list_commands)
@@ -150,6 +179,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.fab_create)
     public void onFabClick() {
-        startActivity(new Intent(getApplicationContext(), CreateActivity.class));
+        startActivityForResult(new Intent(getApplicationContext(), CreateActivity.class), 1);
     }
 }
