@@ -11,7 +11,7 @@ public final class OMCConst {
 
     public static final String API_GET_COMMANDS = "api/commands/";
     public static final String API_GET_COMMAND = "api/commands/{pk}";
-    public static final String API_POST_COMMAND = "api/commands";
+    public static final String API_POST_COMMAND = "api/commands/";
 
     public static final String API_POST_NEW_USER = "api/users/";
 }
