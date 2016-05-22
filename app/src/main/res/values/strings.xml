@@ -37,4 +37,7 @@
 
     <!-- Preferences -->
     <string name="pref_user_auth_token">token</string>
+
+    <!-- Menu -->
+    <string name="logout">Logout</string>
 </resources>
