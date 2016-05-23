@@ -1,6 +1,8 @@
 package com.pygopar.ohmycommand;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -176,7 +178,10 @@ public class MainActivity extends BaseActivity {
 
     @OnItemClick(R.id.list_commands)
     public void onClickCommand(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, commandList.get(position).command, Toast.LENGTH_SHORT).show();
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("text", commandList.get(position).command);
+        clipboardManager.setPrimaryClip(clipData);
+        Toast.makeText(this, "Copied to clipboard!", Toast.LENGTH_SHORT).show();
     }
 
     @OnItemLongClick(R.id.list_commands)
@@ -198,7 +203,7 @@ public class MainActivity extends BaseActivity {
 
                         final ProgressDialog progressDialog = new ProgressDialog(activity);
                         progressDialog.setIndeterminate(true);
-                        progressDialog.setMessage("Fetching Commands...");
+                        progressDialog.setMessage("Deleting Command...");
                         progressDialog.show();
 
                         Retrofit apiCall = new Retrofit.Builder()
